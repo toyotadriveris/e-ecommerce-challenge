@@ -4,8 +4,20 @@ import Product from "./Components/Product/Product";
 
 const StyledMain = styled.main`
   display: flex;
-  width: 80%;
-  place-items: center;
+  justify-content: center;
+
+  & > :first-child {
+    width: 80%;
+    transition: all 0.2s;
+  }
+
+  @media only screen and (max-width: 890px) {
+    & > :first-child {
+      width: 100%;
+      padding: 0em 2em;
+      transition: all 0.2s;
+    }
+  }
 `;
 
 function App() {

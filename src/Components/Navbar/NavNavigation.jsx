@@ -1,12 +1,14 @@
 import { useState } from "react";
 import styled from "styled-components";
 import useScreenSize from "../../Hooks/UseScreenSize";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { IoClose } from "react-icons/io5";
 
+// desktop
 const StyledList = styled.ul`
   display: flex;
   list-style: none;
   gap: 0.5em;
-  margin-right: auto;
 
   li {
     cursor: pointer;
@@ -54,10 +56,92 @@ const StyledList = styled.ul`
   }
 `;
 
+//  mobile
+const BurgerButton = styled.button`
+  background-color: transparent;
+  color: var(--text);
+  outline: 0;
+  border: 0;
+  font-size: 1.8rem;
+  padding: 5px;
+  cursor: pointer;
+  line-height: 0;
+  svg {
+    line-height: 0;
+  }
+`;
+
+const MobileMenu = styled.div`
+  transform: translate(-999px, 0);
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  padding: 2em 5em 2em 2em;
+  background-color: #fff;
+  transition: all 1s;
+  &.active {
+    transform: translate(0, 0);
+    transition: all 0.4s ease;
+  }
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    li {
+      text-transform: capitalize;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: color 0.2s;
+      &:hover {
+        color: var(--accent-500);
+        transition: color 0.2s;
+      }
+
+      &.active {
+        color: var(--accent-500);
+        transition: color 0.2s;
+      }
+    }
+  }
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background-color: #00000060;
+`;
+
+const CloseButton = styled.button`
+  position: relative;
+  z-index: 3;
+  background-color: transparent;
+  margin-bottom: 2em;
+  color: var(--text);
+  outline: 0;
+  border: 0;
+  font-size: 1.8rem;
+  cursor: pointer;
+  line-height: 0;
+  svg {
+    line-height: 0;
+  }
+`;
+
 const Items = ["collections", "men", "women", "about", "contact"];
 
 function NavNavigation() {
   const [active, setActive] = useState("collections");
+  const [openMenu, setOpenMenu] = useState(false);
 
   const { width } = useScreenSize();
 
@@ -80,6 +164,45 @@ function NavNavigation() {
         ))}
       </StyledList>
     );
+
+  return (
+    <>
+      <BurgerButton
+        type="button"
+        role="button"
+        onClick={() => setOpenMenu(true)}
+      >
+        <RxHamburgerMenu />
+      </BurgerButton>
+
+      {openMenu && <Overlay />}
+
+      <MobileMenu className={`${openMenu ? "active" : ""}`}>
+        <CloseButton
+          type="button"
+          role="button"
+          onClick={() => setOpenMenu(false)}
+        >
+          <IoClose />
+        </CloseButton>
+
+        <div className="menu-list">
+          <ul>
+            {Items.map((item) => (
+              <li
+                key={item}
+                role="button"
+                onClick={() => handleActive(item)}
+                className={`${active === item ? "active" : ""}`}
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </MobileMenu>
+    </>
+  );
 }
 
 export default NavNavigation;

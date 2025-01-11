@@ -4,6 +4,8 @@ import { IoCartOutline } from "react-icons/io5";
 import profilePic from "../../assets/images/image-avatar.png";
 import Logo from "../../UI/Logo";
 import NavNavigation from "./NavNavigation";
+import { useState } from "react";
+import Cart from "../Cart/Cart";
 
 const StyledNav = styled.nav`
   display: flex;
@@ -22,6 +24,23 @@ const NavLayout = styled.div`
   @media only screen and (max-width: 890px) {
     width: 100%;
     padding: 2em;
+  }
+
+  @media only screen and (max-width: 700px) {
+    gap: 1em;
+
+    & > :first-child {
+      order: 2;
+      margin-right: auto;
+    }
+
+    & > :nth-child(2) {
+      margin-right: 0;
+    }
+
+    & > :last-child {
+      order: 3;
+    }
   }
 `;
 
@@ -45,79 +64,16 @@ const CartAndProfile = styled.div`
       box-shadow: 0px 0px 0px 2px rgba(255, 166, 0, 1);
       transition: all 0.3s;
     }
-  }
-
-  .cart-wrapper {
-    position: relative;
-  }
-
-  .cart {
-    font-size: 2.5rem;
-    color: gray;
-    cursor: pointer;
-    transition: color 0.2s;
-    padding: 0 5px;
-
-    &:hover {
-      color: black;
-      transition: color 0.3s;
+    @media only screen and (max-width: 700px) {
+      min-width: 0;
+      min-height: 0;
+      width: 40px;
+      height: 40px !important;
     }
   }
 
   @media only screen and (max-width: 890px) {
     gap: 1em;
-  }
-`;
-
-const CartModal = styled.div`
-  --width: 325px;
-  --height: 245px;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  min-width: var(--width);
-  height: 0px;
-  z-index: 1;
-  left: 0;
-  top: 55px;
-  transform: translate(-45%, 0);
-  box-shadow: 0px 15px 25px -10px rgba(0, 0, 0, 0.25);
-  border-radius: 1em;
-  background-color: white;
-  overflow: hidden;
-  transition: all 0.2s;
-
-  &.active {
-    height: var(--height);
-    transition: 0.3s;
-  }
-
-  .cart-window {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-  }
-
-  .cart-title {
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-    padding: 1em;
-    font-weight: 600;
-    font-size: 1.1rem;
-  }
-
-  .cart-items {
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    align-items: center;
-    color: gray;
-    font-weight: 400;
-  }
-
-  @media only screen and (max-width: 890px) {
-    --width: 224px;
-    --height: 130px;
   }
 `;
 
@@ -132,28 +88,10 @@ function Nav() {
         </NavButtons>
 
         <CartAndProfile>
-          <div className="cart-wrapper">
-            <IoCartOutline role="button" className="cart" />
+          <Cart />
 
-            <CartModal className="active">
-              <div className="cart-window">
-                <div className="cart-title">
-                  <span>Cart</span>
-                </div>
-
-                <div className="cart-items">
-                  <span>Your cart is empty.</span>
-                </div>
-              </div>
-            </CartModal>
-          </div>
           <div className="profile-pic">
-            <img
-              width="50px"
-              height="50px"
-              src={profilePic}
-              alt="profile picture of ..."
-            />
+            <img width="50px" src={profilePic} alt="profile picture of ..." />
           </div>
         </CartAndProfile>
       </NavLayout>
