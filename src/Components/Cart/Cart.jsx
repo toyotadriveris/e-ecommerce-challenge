@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import styled from "styled-components";
-import { cartAtom } from "./ShoppingCart";
+import { cartAtom, totalProductsCount } from "./ShoppingCart";
 import { useAtom } from "jotai";
-import { FaTrash } from "react-icons/fa";
+import InCartProduct from "./InCartProduct";
 
 const CartWrapper = styled.div`
   position: relative;
 `;
 
 const CartButton = styled.button`
+  position: relative;
   background-color: transparent;
   outline: none;
   border: none;
@@ -28,15 +29,23 @@ const CartButton = styled.button`
         transition: all 0.2s;
       }
     }
-
-    &.inside {
-    }
   }
 
   &:hover {
     color: black;
     transition: color 0.3s;
   }
+`;
+
+const TotalItemsInside = styled.span`
+  background-color: var(--accent-500);
+  position: absolute;
+  padding: 1px 8px;
+  border-radius: 10px;
+  right: 0;
+  top: -5px;
+  color: var(--blue-800);
+  font-size: 0.8rem;
 `;
 
 const CartModal = styled.div`
@@ -59,12 +68,14 @@ const CartModal = styled.div`
 
   &.active {
     height: var(--height);
-    transition: 0.3s;
+    transition: all 0.3s;
   }
 
   @media only screen and (max-width: 890px) {
-    --width: 224px;
-    --height: 130px;
+    --width: 300px;
+    --height: 220px;
+    padding-bottom: 1em;
+    left: -45px;
   }
 `;
 
@@ -92,37 +103,6 @@ const CartItems = styled.div`
   font-weight: 400;
 `;
 
-const InCartProduct = styled.div`
-  display: flex;
-  gap: 1em;
-  align-items: center;
-  padding: 10px;
-  width: 100%;
-`;
-const ProductImg = styled.div`
-  border-radius: 5px;
-  overflow: hidden;
-`;
-const ProductInfo = styled.div`
-  font-size: 0.9rem;
-  text-align: left;
-  p {
-    text-transform: capitalize;
-  }
-  strong {
-    color: var(--blue-200);
-    padding: 0 4px;
-  }
-`;
-
-const DeleteBtn = styled.button`
-  background-color: transparent;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  color: var(--blue-600);
-`;
-
 const CheckoutBtn = styled.button`
   outline: none;
   border: none;
@@ -143,9 +123,9 @@ const CheckoutBtn = styled.button`
 
 function Cart() {
   const [openCart, setOpenCart] = useState(false);
-  const [cart, setCart] = useAtom(cartAtom);
+  const [cart] = useAtom(cartAtom);
 
-  function handleDeleteItem(id) {}
+  const [totalProductsInCart] = useAtom(totalProductsCount);
 
   return (
     <CartWrapper>
@@ -155,6 +135,9 @@ function Cart() {
         className={`${openCart ? "active" : ""}`}
       >
         <IoCartOutline />
+        {cart.length > 0 && (
+          <TotalItemsInside>{totalProductsInCart}</TotalItemsInside>
+        )}
       </CartButton>
 
       <CartModal className={`${openCart ? "active" : ""}`}>
@@ -165,32 +148,16 @@ function Cart() {
 
           <CartItems>
             {cart.length === 0 && <span>Your cart is empty.</span>}
+            {cart.length > 0 &&
+              cart.map((product) => (
+                <InCartProduct product={product} key={product.id} />
+              ))}
 
-            <InCartProduct>
-              <ProductImg>
-                <img
-                  width="50px"
-                  height="50px"
-                  src="/src/assets/images/image-product-1.jpg"
-                  alt="product img"
-                />
-              </ProductImg>
-
-              <ProductInfo>
-                <p>fall limited edition sneakers</p>
-                <span>
-                  $125 x 3 <strong>$375.00</strong>
-                </span>
-              </ProductInfo>
-
-              <DeleteBtn onClick={handleDeleteItem} type="button" role="button">
-                <FaTrash />
-              </DeleteBtn>
-            </InCartProduct>
-
-            <CheckoutBtn type="button" role="button">
-              Checkout
-            </CheckoutBtn>
+            {cart.length > 0 && (
+              <CheckoutBtn type="button" role="button">
+                Checkout
+              </CheckoutBtn>
+            )}
           </CartItems>
         </CartWindow>
       </CartModal>

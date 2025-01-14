@@ -14,6 +14,15 @@ const Layout = styled.section`
   & > div {
     flex-basis: 50%;
   }
+  transition: all 0.2s;
+  @media only screen and (max-width: 680px) {
+    flex-direction: column;
+    transition: all 0.2s;
+  }
+
+  @media only screen and (max-width: 450px) {
+    gap: 0;
+  }
 `;
 
 function Product() {

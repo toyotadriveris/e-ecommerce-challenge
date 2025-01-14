@@ -14,16 +14,27 @@ const ProductImageLayout = styled.div`
 const ProductImage = styled.div`
   border-radius: var(--border-radius);
   overflow: hidden;
+  min-width: 300px;
+  img {
+    height: auto;
+  }
   cursor: pointer;
 `;
 const ProductImagesCarousel = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 10px;
   overflow: hidden;
   max-width: 410px;
   padding: 10px;
   width: 100%;
   transition: all 0.2s;
+
+  @media only screen and (max-width: 450px) {
+    width: 0%;
+    height: 0%;
+    transition: all 0.3s;
+  }
 `;
 
 const ThumbImgContainer = styled.div`
@@ -42,6 +53,16 @@ const ThumbImgContainer = styled.div`
       opacity: 0.5;
     }
     box-shadow: 0px 0px 0px 2px rgba(255, 166, 0, 1);
+    @media only screen and (max-width: 450px) {
+      width: 0;
+      height: 0;
+      box-shadow: 0px 0px 0px 0px rgba(255, 166, 0, 1);
+      transition: all 0.2s;
+    }
+  }
+
+  img {
+    height: auto;
   }
 `;
 

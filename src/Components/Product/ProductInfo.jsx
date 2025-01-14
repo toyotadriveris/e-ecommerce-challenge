@@ -37,6 +37,22 @@ const ProductPrice = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  transition: all 0.2s;
+  @media only screen and (max-width: 680px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 150px;
+    transition: all 0.2s;
+  }
+
+  @media only screen and (max-width: 450px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100%;
+    transition: all 0.2s;
+  }
 `;
 const FinalPrice = styled.div`
   display: flex;
@@ -69,6 +85,17 @@ const ProductCounterAndBtn = styled.div`
   display: flex;
   align-items: center;
   gap: 1em;
+  transition: all 0.2s;
+  @media only screen and (max-width: 680px) {
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  @media only screen and (max-width: 450px) {
+    flex-direction: column;
+    max-width: 100%;
+    transition: all 0.2s;
+  }
 `;
 const ProductCounter = styled.div`
   display: flex;
@@ -92,11 +119,19 @@ const ProductCounter = styled.div`
       transition: all 0.3s;
     }
   }
+
+  @media only screen and (max-width: 450px) {
+    width: 100%;
+    max-width: 18em;
+    transition: all 0.2s;
+  }
 `;
 const AddToCartBtn = styled.button`
-  padding: 0.8em 4em;
+  padding: 0.8em 2em;
+  width: min(20em, 55%);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   font-size: 0.9rem;
   font-weight: 600;
@@ -119,6 +154,11 @@ const AddToCartBtn = styled.button`
   &:not([disabled]):hover {
     background-color: hsl(from var(--accent-500) h s 70%);
     transition: all 0.3s;
+  }
+  @media only screen and (max-width: 450px) {
+    width: 100%;
+    max-width: 20em;
+    transition: all 0.2s;
   }
 `;
 
@@ -148,7 +188,7 @@ function ProductInfo({ product = [] }) {
       title: product.title,
       price: finalProductPrice,
       quantity: currentQuantity,
-      img: product.images,
+      img: product.images.ImgOne,
     };
 
     if (cart.find((product) => product.id === item.id)) {
