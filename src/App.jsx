@@ -14,7 +14,6 @@ const StyledMain = styled.main`
   @media only screen and (max-width: 890px) {
     & > :first-child {
       width: 100%;
-      padding: 0em 2em;
       transition: all 0.2s;
     }
   }
