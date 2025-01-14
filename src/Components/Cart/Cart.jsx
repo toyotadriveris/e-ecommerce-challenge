@@ -3,6 +3,7 @@ import { IoCartOutline } from "react-icons/io5";
 import styled from "styled-components";
 import { cartAtom } from "./ShoppingCart";
 import { useAtom } from "jotai";
+import { FaTrash } from "react-icons/fa";
 
 const CartWrapper = styled.div`
   position: relative;
@@ -83,20 +84,69 @@ const CartTitle = styled.div`
 
 const CartItems = styled.div`
   display: flex;
+  flex-direction: column;
   flex-grow: 1;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   color: gray;
   font-weight: 400;
 `;
 
-const InCartProduct = styled.div``;
-const ProductImg = styled.div``;
+const InCartProduct = styled.div`
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  padding: 10px;
+  width: 100%;
+`;
+const ProductImg = styled.div`
+  border-radius: 5px;
+  overflow: hidden;
+`;
+const ProductInfo = styled.div`
+  font-size: 0.9rem;
+  text-align: left;
+  p {
+    text-transform: capitalize;
+  }
+  strong {
+    color: var(--blue-200);
+    padding: 0 4px;
+  }
+`;
+
+const DeleteBtn = styled.button`
+  background-color: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: var(--blue-600);
+`;
+
+const CheckoutBtn = styled.button`
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  background-color: var(--accent-500);
+  color: var(--blue-200);
+  text-align: center;
+  width: 90%;
+  padding: 1em 0;
+  cursor: pointer;
+  transition: all 0.2s;
+  &:hover {
+    background-color: hsl(from var(--accent-500) h s 70%);
+    transition: all 0.3s;
+  }
+`;
 
 function Cart() {
   const [openCart, setOpenCart] = useState(false);
   const [cart, setCart] = useAtom(cartAtom);
-  console.log(cart);
+
+  function handleDeleteItem(id) {}
+
   return (
     <CartWrapper>
       <CartButton
@@ -115,10 +165,32 @@ function Cart() {
 
           <CartItems>
             {cart.length === 0 && <span>Your cart is empty.</span>}
+
             <InCartProduct>
-              <ProductImg></ProductImg>
+              <ProductImg>
+                <img
+                  width="50px"
+                  height="50px"
+                  src="/src/assets/images/image-product-1.jpg"
+                  alt="product img"
+                />
+              </ProductImg>
+
+              <ProductInfo>
+                <p>fall limited edition sneakers</p>
+                <span>
+                  $125 x 3 <strong>$375.00</strong>
+                </span>
+              </ProductInfo>
+
+              <DeleteBtn onClick={handleDeleteItem} type="button" role="button">
+                <FaTrash />
+              </DeleteBtn>
             </InCartProduct>
-            <button>Checkout</button>
+
+            <CheckoutBtn type="button" role="button">
+              Checkout
+            </CheckoutBtn>
           </CartItems>
         </CartWindow>
       </CartModal>

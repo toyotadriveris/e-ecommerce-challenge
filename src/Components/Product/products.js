@@ -1,10 +1,6 @@
-import ProductImgOne from "../../assets/images/image-product-1.jpg";
-import ProductImgTwo from "../../assets/images/image-product-2.jpg";
-import ProductImgThree from "../../assets/images/image-product-3.jpg";
-import ProductImgFour from "../../assets/images/image-product-4.jpg";
 export const products = [
   {
-    id: "0",
+    id: "1",
     seller: "Sneaker Company",
     title: "Fall Limited Edition Sneakers",
     description:
@@ -13,10 +9,10 @@ export const products = [
     discount: 50,
     stock: 1,
     images: {
-      ProductImgOne,
-      ProductImgTwo,
-      ProductImgThree,
-      ProductImgFour,
+      ImgOne: "/src/assets/images/image-product-1.jpg",
+      ImgTwo: "/src/assets/images/image-product-2.jpg",
+      ImgThree: "/src/assets/images/image-product-3.jpg",
+      ImgFour: "/src/assets/images/image-product-4.jpg",
     },
   },
 ];

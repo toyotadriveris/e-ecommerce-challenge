@@ -122,7 +122,7 @@ const AddToCartBtn = styled.button`
   }
 `;
 
-function ProductInfo({ product }) {
+function ProductInfo({ product = [] }) {
   const [quantity, setQuantity] = useState(1);
   const [cart, setCart] = useAtom(cartAtom);
 
@@ -136,6 +136,7 @@ function ProductInfo({ product }) {
 
   let finalProductPrice = Number(product.price);
   const productDiscount = product.discount;
+
   if (productDiscount > 0) {
     finalProductPrice = product.price * (productDiscount / 100);
   }
