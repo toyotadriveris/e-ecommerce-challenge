@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import styled from "styled-components";
+import { cartAtom } from "./ShoppingCart";
+import { useAtom } from "jotai";
 
 const CartWrapper = styled.div`
   position: relative;
@@ -14,8 +16,21 @@ const CartButton = styled.button`
   font-size: 2rem;
   color: gray;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: all 0.2s;
   padding: 0 5px;
+  &.active {
+    svg {
+      transition: all 0.2s;
+      color: var(--blue-200);
+      & > :nth-child(4) {
+        fill: var(--blue-200);
+        transition: all 0.2s;
+      }
+    }
+
+    &.inside {
+    }
+  }
 
   &:hover {
     color: black;
@@ -75,11 +90,20 @@ const CartItems = styled.div`
   font-weight: 400;
 `;
 
+const InCartProduct = styled.div``;
+const ProductImg = styled.div``;
+
 function Cart() {
   const [openCart, setOpenCart] = useState(false);
+  const [cart, setCart] = useAtom(cartAtom);
+  console.log(cart);
   return (
     <CartWrapper>
-      <CartButton role="button" onClick={() => setOpenCart(!openCart)}>
+      <CartButton
+        role="button"
+        onClick={() => setOpenCart(!openCart)}
+        className={`${openCart ? "active" : ""}`}
+      >
         <IoCartOutline />
       </CartButton>
 
@@ -90,7 +114,11 @@ function Cart() {
           </CartTitle>
 
           <CartItems>
-            <span>Your cart is empty.</span>
+            {cart.length === 0 && <span>Your cart is empty.</span>}
+            <InCartProduct>
+              <ProductImg></ProductImg>
+            </InCartProduct>
+            <button>Checkout</button>
           </CartItems>
         </CartWindow>
       </CartModal>
