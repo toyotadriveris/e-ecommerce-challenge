@@ -9,10 +9,10 @@ export const products = [
     discount: 50,
     stock: 1,
     images: {
-      ImgOne: "/src/assets/images/image-product-1.jpg",
-      ImgTwo: "/src/assets/images/image-product-2.jpg",
-      ImgThree: "/src/assets/images/image-product-3.jpg",
-      ImgFour: "/src/assets/images/image-product-4.jpg",
+      ImgOne: "/assets/images/image-product-1.jpg",
+      ImgTwo: "/assets/images/image-product-2.jpg",
+      ImgThree: "/assets/images/image-product-3.jpg",
+      ImgFour: "/assets/images/image-product-4.jpg",
     },
   },
 ];
