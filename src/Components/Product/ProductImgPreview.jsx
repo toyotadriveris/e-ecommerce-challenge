@@ -28,12 +28,6 @@ const ProductImagesCarousel = styled.div`
   padding: 10px;
   width: 100%;
   transition: all 0.2s;
-
-  @media only screen and (max-width: 450px) {
-    width: 0%;
-    height: 0%;
-    transition: all 0.3s;
-  }
 `;
 
 const ThumbImgContainer = styled.div`
@@ -52,12 +46,10 @@ const ThumbImgContainer = styled.div`
       opacity: 0.5;
     }
     box-shadow: 0px 0px 0px 2px rgba(255, 166, 0, 1);
-    @media only screen and (max-width: 450px) {
-      width: 0;
-      height: 0;
-      box-shadow: 0px 0px 0px 0px rgba(255, 166, 0, 1);
-      transition: all 0.2s;
-    }
+  }
+
+  @media only screen and (max-width: 460px) {
+    width: 70px;
   }
 
   img {
@@ -81,19 +73,31 @@ const ImageModal = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   transition: all 0.5s;
+  width: 100%;
+  display: grid;
+
+  place-content: center;
+
+  @media only screen and (max-width: 460px) {
+    padding: 6em;
+  }
 `;
 const ImageModalContainer = styled.div`
   position: relative;
 
+  img {
+    height: auto;
+  }
   & > :nth-child(3) {
     border-radius: 15px;
+    min-width: 250px;
   }
 `;
 
 const RightButton = styled.button`
   position: absolute;
   background-color: white;
-  transform: translate(-50%, -45%);
+  transform: translate(-50%, -50%);
   top: 200px;
   right: -40px;
   border-radius: 50%;
@@ -116,7 +120,7 @@ const RightButton = styled.button`
 const LeftButton = styled.button`
   position: absolute;
   background-color: white;
-  transform: translate(-50%, -45%);
+  transform: translate(-50%, -50%);
   top: calc(200px);
   left: 0;
   border-radius: 50%;
