@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import productimg from "../../assets/images/image-product-1.jpg";
-import productimgone from "../../assets/images/image-product-1-thumbnail.jpg";
-import productimgtwo from "../../assets/images/image-product-2-thumbnail.jpg";
-import productimgthree from "../../assets/images/image-product-3-thumbnail.jpg";
-import productimgfour from "../../assets/images/image-product-4-thumbnail.jpg";
+import { useState } from "react";
+import { products } from "./products";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
 const ProductImageLayout = styled.div`
   --border-radius: 10px;
   display: flex;
@@ -66,54 +65,190 @@ const ThumbImgContainer = styled.div`
   }
 `;
 
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100dvh;
+  z-index: 100;
+  background-color: hsl(from var(--blue-200) h s 5% / 0.9);
+  backdrop-filter: blur(2px);
+`;
+const ImageModal = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.5s;
+`;
+const ImageModalContainer = styled.div`
+  position: relative;
+
+  & > :nth-child(3) {
+    border-radius: 15px;
+  }
+`;
+
+const RightButton = styled.button`
+  position: absolute;
+  background-color: white;
+  transform: translate(-50%, -45%);
+  top: 200px;
+  right: -40px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  outline: none;
+  border: none;
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--blue-200);
+  cursor: pointer;
+
+  transition: all 0.3s;
+
+  &:hover {
+    color: var(--accent-500);
+    transition: all 0.2s;
+  }
+`;
+const LeftButton = styled.button`
+  position: absolute;
+  background-color: white;
+  transform: translate(-50%, -45%);
+  top: calc(200px);
+  left: 0;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  outline: none;
+  border: none;
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--blue-200);
+  cursor: pointer;
+
+  transition: all 0.3s;
+
+  &:hover {
+    color: var(--accent-500);
+    transition: all 0.2s;
+  }
+`;
+
+const ModalImagesCarousel = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  overflow: hidden;
+  max-width: 410px;
+  padding: 10px;
+  width: 100%;
+  transition: all 0.2s;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: -50px;
+  right: 0;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+
+  transition: all 0.2s;
+
+  &:hover {
+    color: var(--accent-500);
+    transition: all 0.2s;
+  }
+`;
+
 function ProductImgPreview() {
+  const [currentImg, setCurrentImg] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
+  const productImages = Object.values(products[0].images);
+  let n = productImages.length;
+
   return (
     <ProductImageLayout>
-      <ProductImage>
+      <ProductImage onClick={() => setOpenModal(true)}>
         <img
           width="400px"
           height="400px"
           className="active"
-          src={productimg}
+          src={productImages[currentImg]}
           alt="product img"
         />
       </ProductImage>
+
+      {openModal && (
+        <Overlay>
+          <ImageModal>
+            <ImageModalContainer>
+              <CloseButton
+                type="button"
+                role="button"
+                onClick={() => setOpenModal(false)}
+              >
+                <IoClose />
+              </CloseButton>
+
+              <LeftButton
+                type="button"
+                role="button"
+                onClick={() => setCurrentImg((prev) => (prev - 1 + n) % n)}
+              >
+                <FaChevronLeft />
+              </LeftButton>
+              <img
+                width="400px"
+                height="400px"
+                src={productImages[currentImg]}
+                alt="product img"
+              />
+              <RightButton
+                type="button"
+                role="button"
+                onClick={() => setCurrentImg((prev) => (prev + 1) % n)}
+              >
+                <FaChevronRight />
+              </RightButton>
+
+              <ModalImagesCarousel>
+                {productImages.map((img, index) => (
+                  <ThumbImgContainer
+                    key={index}
+                    className={`${index === currentImg ? "active" : ""}`}
+                    onClick={() => setCurrentImg(index)}
+                  >
+                    <img
+                      width="85px"
+                      height="85px"
+                      src={img}
+                      alt="product img"
+                    />
+                  </ThumbImgContainer>
+                ))}
+              </ModalImagesCarousel>
+            </ImageModalContainer>
+          </ImageModal>
+        </Overlay>
+      )}
+
       <ProductImagesCarousel>
-        <ThumbImgContainer className="active">
-          <img
-            width="85px"
-            height="85px"
-            src={productimgone}
-            alt="product img"
-          />
-        </ThumbImgContainer>
-
-        <ThumbImgContainer>
-          <img
-            width="85px"
-            height="85px"
-            src={productimgtwo}
-            alt="product img"
-          />
-        </ThumbImgContainer>
-
-        <ThumbImgContainer>
-          <img
-            width="85px"
-            height="85px"
-            src={productimgthree}
-            alt="product img"
-          />
-        </ThumbImgContainer>
-
-        <ThumbImgContainer>
-          <img
-            width="85px"
-            height="85px"
-            src={productimgfour}
-            alt="product img"
-          />
-        </ThumbImgContainer>
+        {productImages.map((img, index) => (
+          <ThumbImgContainer
+            key={index}
+            className={`${index === currentImg ? "active" : ""}`}
+            onClick={() => setCurrentImg(index)}
+          >
+            <img width="85px" height="85px" src={img} alt="product img" />
+          </ThumbImgContainer>
+        ))}
       </ProductImagesCarousel>
     </ProductImageLayout>
   );

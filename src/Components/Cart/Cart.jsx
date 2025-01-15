@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { cartAtom, totalProductsCount } from "./ShoppingCart";
 import { useAtom } from "jotai";
 import InCartProduct from "./InCartProduct";
+import { useWhenOutsideComponent } from "../../Hooks/useWhenOutsideComponent";
 
 const CartWrapper = styled.div`
   position: relative;
@@ -123,8 +124,12 @@ const CheckoutBtn = styled.button`
 
 function Cart() {
   const [openCart, setOpenCart] = useState(false);
-  const [cart] = useAtom(cartAtom);
+  function handleWhenOutsideComponent() {
+    setOpenCart(false);
+  }
+  const ref = useWhenOutsideComponent(handleWhenOutsideComponent);
 
+  const [cart] = useAtom(cartAtom);
   const [totalProductsInCart] = useAtom(totalProductsCount);
 
   return (
@@ -140,7 +145,7 @@ function Cart() {
         )}
       </CartButton>
 
-      <CartModal className={`${openCart ? "active" : ""}`}>
+      <CartModal ref={ref} className={`${openCart ? "active" : ""}`}>
         <CartWindow>
           <CartTitle>
             <span>Cart</span>
