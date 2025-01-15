@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import styled from "styled-components";
 import { cartAtom, totalProductsCount } from "./ShoppingCart";
@@ -21,6 +21,11 @@ const CartButton = styled.button`
   cursor: pointer;
   transition: all 0.2s;
   padding: 0 5px;
+
+  svg {
+    pointer-events: none;
+  }
+
   &.active {
     svg {
       transition: all 0.2s;
@@ -124,19 +129,25 @@ const CheckoutBtn = styled.button`
 
 function Cart() {
   const [openCart, setOpenCart] = useState(false);
+  const [cart] = useAtom(cartAtom);
+  const [totalProductsInCart] = useAtom(totalProductsCount);
+  const toggleRef = useRef(null);
+
+  const ref = useWhenOutsideComponent(
+    handleWhenOutsideComponent,
+    true,
+    toggleRef
+  );
   function handleWhenOutsideComponent() {
     setOpenCart(false);
   }
-  const ref = useWhenOutsideComponent(handleWhenOutsideComponent);
-
-  const [cart] = useAtom(cartAtom);
-  const [totalProductsInCart] = useAtom(totalProductsCount);
 
   return (
     <CartWrapper>
       <CartButton
         role="button"
-        onClick={() => setOpenCart(!openCart)}
+        ref={toggleRef}
+        onClick={() => setOpenCart((prev) => !prev)}
         className={`${openCart ? "active" : ""}`}
       >
         <IoCartOutline />
