@@ -9,6 +9,12 @@ const ProductImageLayout = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 1em;
+
+  @media only screen and (max-width: 400px) {
+    .hide-on-mobile {
+      display: none;
+    }
+  }
 `;
 const ProductImage = styled.div`
   border-radius: var(--border-radius);
@@ -62,7 +68,8 @@ const Overlay = styled.div`
   top: 0;
   right: 0;
   width: 100%;
-  height: 100dvh;
+  height: 100%;
+  min-height: 100dvh;
   z-index: 100;
   background-color: hsl(from var(--blue-200) h s 5% / 0.9);
   backdrop-filter: blur(2px);
@@ -75,22 +82,24 @@ const ImageModal = styled.div`
   transition: all 0.5s;
   width: 100%;
   display: grid;
-
   place-content: center;
-
-  @media only screen and (max-width: 460px) {
-    padding: 6em;
-  }
 `;
 const ImageModalContainer = styled.div`
-  position: relative;
+  /* position: relative; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
+const MainImgContainer = styled.div`
+  position: relative;
+  width: 70%;
+  min-width: 200px;
+  max-width: 500px;
   img {
     height: auto;
-  }
-  & > :nth-child(3) {
     border-radius: 15px;
-    min-width: 250px;
   }
 `;
 
@@ -98,7 +107,7 @@ const RightButton = styled.button`
   position: absolute;
   background-color: white;
   transform: translate(-50%, -50%);
-  top: 200px;
+  top: 50%;
   right: -40px;
   border-radius: 50%;
   width: 40px;
@@ -121,7 +130,7 @@ const LeftButton = styled.button`
   position: absolute;
   background-color: white;
   transform: translate(-50%, -50%);
-  top: calc(200px);
+  top: 50%;
   left: 0;
   border-radius: 50%;
   width: 40px;
@@ -143,19 +152,20 @@ const LeftButton = styled.button`
 
 const ModalImagesCarousel = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: 10px;
   overflow: hidden;
-  max-width: 410px;
-  padding: 10px;
-  width: 100%;
+  max-width: 500px;
+  padding: 15px;
+  width: 75%;
   transition: all 0.2s;
 `;
 
 const CloseButton = styled.button`
   position: absolute;
-  top: -50px;
-  right: 0;
+  transform: translate(-50%, -50%);
+  top: -35px;
+  right: -20px;
   background-color: transparent;
   outline: none;
   border: none;
@@ -193,34 +203,31 @@ function ProductImgPreview() {
         <Overlay>
           <ImageModal>
             <ImageModalContainer>
-              <CloseButton
-                type="button"
-                role="button"
-                onClick={() => setOpenModal(false)}
-              >
-                <IoClose />
-              </CloseButton>
+              <MainImgContainer>
+                <img src={productImages[currentImg]} alt="product img" />
+                <LeftButton
+                  type="button"
+                  role="button"
+                  onClick={() => setCurrentImg((prev) => (prev - 1 + n) % n)}
+                >
+                  <FaChevronLeft />
+                </LeftButton>
+                <RightButton
+                  type="button"
+                  role="button"
+                  onClick={() => setCurrentImg((prev) => (prev + 1) % n)}
+                >
+                  <FaChevronRight />
+                </RightButton>
 
-              <LeftButton
-                type="button"
-                role="button"
-                onClick={() => setCurrentImg((prev) => (prev - 1 + n) % n)}
-              >
-                <FaChevronLeft />
-              </LeftButton>
-              <img
-                width="400px"
-                height="400px"
-                src={productImages[currentImg]}
-                alt="product img"
-              />
-              <RightButton
-                type="button"
-                role="button"
-                onClick={() => setCurrentImg((prev) => (prev + 1) % n)}
-              >
-                <FaChevronRight />
-              </RightButton>
+                <CloseButton
+                  type="button"
+                  role="button"
+                  onClick={() => setOpenModal(false)}
+                >
+                  <IoClose />
+                </CloseButton>
+              </MainImgContainer>
 
               <ModalImagesCarousel>
                 {productImages.map((img, index) => (
@@ -243,7 +250,7 @@ function ProductImgPreview() {
         </Overlay>
       )}
 
-      <ProductImagesCarousel>
+      <ProductImagesCarousel className="hide-on-mobile">
         {productImages.map((img, index) => (
           <ThumbImgContainer
             key={index}

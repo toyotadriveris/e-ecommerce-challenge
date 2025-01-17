@@ -8,6 +8,10 @@ import { cartAtom } from "../Cart/ShoppingCart";
 const ProductInfoLayout = styled.div`
   display: flex;
   flex-direction: column;
+
+  @media only screen and (max-width: 400px) {
+    margin-top: 25px;
+  }
 `;
 
 const SellerAndProductName = styled.div`
